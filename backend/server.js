@@ -4,6 +4,7 @@ dotenv.config();
 import connectDB from './config/db.js';
 import cors from 'cors'
 import productRouter from './routes/productRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 connectDB();
 
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRouter);
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log("Server is running now");

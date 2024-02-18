@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { setCredential } from "../slices/authSlice"
 import Loader from "../components/Loader"
+import CheckoutSteps from "../components/CheckoutSteps"
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -74,6 +75,7 @@ const LoginScreen = () => {
                     New customer? <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link>
                 </Col>
             </Row>
+            {redirect === '/shipping' && <CheckoutSteps step={1} />}
         </FormContainer>
     )
 }

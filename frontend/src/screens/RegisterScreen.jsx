@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FormContainer from '../components/FormContainer'
 import { Form, FormControl, FormGroup, FormLabel, Button, Row, Col } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../slices/usersApiSlice';
 import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCredential } from '../slices/authSlice';
 
 const RegisterScreen = () => {
@@ -22,6 +22,14 @@ const RegisterScreen = () => {
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect');
+
+    const { userInfo } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        if(userInfo) {
+            navigate(redirect);
+        }
+    }, [userInfo, redirect, navigate])
 
     const registerHandler = async(e) => {
         e.preventDefault();

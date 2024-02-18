@@ -89,7 +89,7 @@ const RegisterScreen = () => {
             </Form>
             <Row>
                 <Col>
-                    Already have an account? <Link to={redirect? `/login?=${redirect}`:'/login'}>Sign In</Link>
+                    Already have an account? <Link to={redirect? `/login?redirect=${redirect}`:'/login'}>Sign In</Link>
                 </Col>
             </Row>
         </FormContainer>

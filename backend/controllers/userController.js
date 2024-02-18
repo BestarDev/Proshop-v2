@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
-import jwt from 'jsonwebtoken'
 import {generateToken} from '../utils/generateToken.js';
 
 // @ desc       Auth User
@@ -73,14 +72,46 @@ const logoutUser = (req, res) => {
 // @ route      Get /api/users/profile
 // @ access     Private
 const getProfile = asyncHandler(async(req, res) => {
-    res.json("Get User Profile");
+    const user = await User.findById(req.user._id);
+
+    if(user) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            password: user.password
+        })
+    } else {
+        res.status(404);
+        throw new Error('User not Found')
+    }
 })
 
 // @ desc       Update User Profile
 // @ route      PUT /api/users/profile
 // @ access     Private
 const updateProfile = asyncHandler(async(req, res) => {
-    res.json("Update User Profile");
+    const user = await User.findById(req.user._id);
+    const {name, email, password} = req.body;
+    if(user) {
+        user.name = name || user.name;
+        user.email = email || user.email;
+        if(password){
+            user.password = password
+        }
+
+        const updateUser = await user.save();
+
+        res.status(200).json({
+            _id: updateUser._id,
+            name: updateUser.name,
+            email: updateUser.email,
+            isAdmin: updateUser.isAdmin
+        })
+    } else {
+        res.status(404);
+        throw new Error('User not Found')
+    }
 })
 
 // @ desc       Get Users

@@ -8,9 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const OrderListScreen = () => {
   const {data: orders, isLoading, error} = useGetOrdersQuery();
-  useEffect(() => {
-    console.log(orders);
-  }, [orders])
+  
   return (
     <>
       <h1>Orders List</h1>

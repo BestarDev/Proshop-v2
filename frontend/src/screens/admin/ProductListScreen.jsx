@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCreateProductMutation, useGetProductsQuery } from '../../slices/productsApiSlice'
+import { useCreateProductMutation, useDeleteProductMutation, useGetProductsQuery } from '../../slices/productsApiSlice'
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import Loader from '../../components/Loader';
@@ -13,9 +13,18 @@ const ProductListScreen = () => {
     /****************************************************************************************************/
     const {data: products, refetch, isLoading, error } = useGetProductsQuery();
     const [createProduct, {isLoading:loadingCreate}] = useCreateProductMutation();
+    const [deleteProduct, {isLoading: loadingDelete}] = useDeleteProductMutation();
 
-    const deleteHandler = (id) => {
-        console.log(id);
+    const deleteHandler = async(id) => {
+        if(window.confirm('Are you sure you want to delete a product?')){
+            try {
+                const {message} = await deleteProduct(id);
+                refetch()
+                toast.success(message);
+            } catch (err) {
+                toast.error(err?.data?.message || err.error)
+            }
+        }
     }
 
     const createProductHandler = async() => {

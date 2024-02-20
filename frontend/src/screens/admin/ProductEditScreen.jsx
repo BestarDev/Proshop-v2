@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useGetProductByIdQuery, useUpdateProductMutation } from '../../slices/productsApiSlice'
+import { useGetProductByIdQuery, useUpdateProductMutation, useUploadProductImageMutation } from '../../slices/productsApiSlice'
 import Loader from '../../components/Loader'
 import Message from '../../components/Message'
 import FormContainer from '../../components/FormContainer'
@@ -21,6 +21,7 @@ const ProductEditScreen = () => {
 
     const {data: product, isLoading, error} = useGetProductByIdQuery(productId);
     const [updateProduct, { isLoading: loadingUpdate}] = useUpdateProductMutation();
+    const [uploadProductImage, { isLoading: loadingUpload}] = useUploadProductImageMutation();
 
     useEffect(() => {
         if(product) {
@@ -48,12 +49,25 @@ const ProductEditScreen = () => {
         }
     }
 
+    const uploadFileHandler = async(e) => {
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+        console.log(formData.keys());
+        try{
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success(res.message)
+            setImage(res.image);
+        } catch(err) {
+            toast.error(err?.data?.message || err.error); 
+        }
+    }
+
     return (
         <>
             <Link to={`/admin/productlist`} className='btn btn-light my-3'>
                 Go Back
             </Link>
-            {loadingUpdate && isLoading ? <Loader /> : 
+            {loadingUpdate && loadingUpload && isLoading ? <Loader /> : 
             error ? <Message variant='danger'>{error?.data?.message || error.error }</Message> : (
                 <FormContainer>
                     <h1>Edit Product</h1>
@@ -65,6 +79,12 @@ const ProductEditScreen = () => {
                         <FormGroup controlId='price' className='my-1'>
                             <FormLabel>Price</FormLabel>
                             <FormControl type='number' value={price} onChange={(e) => setPrice(e.target.value)}/>
+                        </FormGroup>
+                        <FormGroup controlId='image' className='my-1'>
+                            <FormLabel>Image</FormLabel>
+                            <FormControl type='text' placeholder='Enter image url' value={image}
+                                onChange={(e) => setImage(e.target.value)} />
+                            <FormControl type='file' label='Choose file' onChange={uploadFileHandler} />
                         </FormGroup>
                         <FormGroup controlId='brand' className='my-1'>
                             <FormLabel>Brand</FormLabel>

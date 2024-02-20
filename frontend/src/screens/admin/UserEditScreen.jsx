@@ -6,6 +6,7 @@ import Message from '../../components/Message';
 import FormContainer from '../../components/FormContainer';
 import { Button, Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const UserEditScreen = () => {
     const [name, setName] = useState('')
@@ -14,6 +15,8 @@ const UserEditScreen = () => {
     const {id: userId} = useParams();
     const {data: user, isLoading, error} = useGetUserByIdQuery(userId);
     const [updateUser, {isLoading: loadingUpdate}] = useUpdateUserMutation();
+
+    const { userInfo } = useSelector(state => state.auth);
 
     const navigate = useNavigate();
 
@@ -27,10 +30,17 @@ const UserEditScreen = () => {
 
     const submitHandler = async(e) => {
         e.preventDefault();
-        console.log(isAdmin);
         try {
             const updatedUser = {
                 _id: userId, name, email, isAdmin
+            }
+            /********** Important ********/
+            /*   Keep Yourself as Admin  */
+            /*****************************/
+            if(userInfo._id === userId && !isAdmin){
+                toast.error('Cannot Unset Yourself To Admin');
+                setIsAdmin(true);
+                return ;
             }
             const res = await updateUser({userId, userData:{...updatedUser}})
             toast.success('Updated Successfully');

@@ -18,9 +18,9 @@ const ProductListScreen = () => {
     const deleteHandler = async(id) => {
         if(window.confirm('Are you sure you want to delete a product?')){
             try {
-                const {message} = await deleteProduct(id);
+                const res = await deleteProduct(id);
                 refetch()
-                toast.success(message);
+                toast.success(res.data.message);
             } catch (err) {
                 toast.error(err?.data?.message || err.error)
             }
@@ -30,8 +30,9 @@ const ProductListScreen = () => {
     const createProductHandler = async() => {
         if(window.confirm('Are you sure you want to create a new product?')) {
             try {
-                await createProduct();
+                const res = await createProduct();
                 refetch();
+                toast.success(res?.data?.message || 'Created Product Successfully')
             } catch (error) {
                 toast.error(error?.data?.message || error.error)
             }
@@ -50,6 +51,7 @@ const ProductListScreen = () => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDelete && <Loader />}
             {loadingCreate && isLoading ? <Loader /> : 
             error ? <Message variant='danger'>{error?.data?.message || error.error }</Message> : (
                 <Table striped hover responsive className='table-sm'>

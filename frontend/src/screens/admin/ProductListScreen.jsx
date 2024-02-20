@@ -6,12 +6,15 @@ import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import Paginate from '../../components/Paginate';
 
 const ProductListScreen = () => {
+    const {pageNumber} = useParams();
     /**************************************** Important *************************************************/
     /* You must destructure refetch product so get the new product just after create it without refresh */
     /****************************************************************************************************/
-    const {data: products, refetch, isLoading, error } = useGetProductsQuery();
+    const {data, refetch, isLoading, error } = useGetProductsQuery({pageNumber});
     const [createProduct, {isLoading:loadingCreate}] = useCreateProductMutation();
     const [deleteProduct, {isLoading: loadingDelete}] = useDeleteProductMutation();
 
@@ -51,43 +54,46 @@ const ProductListScreen = () => {
                     </Button>
                 </Col>
             </Row>
-            {loadingDelete && <Loader />}
-            {loadingCreate && isLoading ? <Loader /> : 
+            {loadingDelete || loadingCreate&& <Loader />}
+            {isLoading ? <Loader /> : 
             error ? <Message variant='danger'>{error?.data?.message || error.error }</Message> : (
-                <Table striped hover responsive className='table-sm'>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>NAME</th>
-                            <th>PRICE</th>
-                            <th>CATEGORY</th>
-                            <th>BRAND</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {products && products.map((product) => (
-                        <tr key={product._id}>
-                            <td>{product._id}</td>
-                            <td>{product.name}</td>
-                            <td>{product.price}</td>
-                            <td>{product.category}</td>
-                            <td>{product.brand}</td>
-                            <td>
-                                <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                                    <Button variant='light' className='btn-sm mx-2'>
-                                        <FaEdit />
+                <>
+                    <Table striped hover responsive className='table-sm'>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>PRICE</th>
+                                <th>CATEGORY</th>
+                                <th>BRAND</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {data?.products && data.products.map((product) => (
+                            <tr key={product._id}>
+                                <td>{product._id}</td>
+                                <td>{product.name}</td>
+                                <td>{product.price}</td>
+                                <td>{product.category}</td>
+                                <td>{product.brand}</td>
+                                <td>
+                                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                                        <Button variant='light' className='btn-sm mx-2'>
+                                            <FaEdit />
+                                        </Button>
+                                    </LinkContainer>
+                                    <Button variant='warning' className='btn-sm'
+                                        onClick={() => deleteHandler(product._id)}>
+                                        <FaTrash style={{color:'white'}}/>
                                     </Button>
-                                </LinkContainer>
-                                <Button variant='warning' className='btn-sm'
-                                    onClick={() => deleteHandler(product._id)}>
-                                    <FaTrash style={{color:'white'}}/>
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </Table>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                    <Paginate pages ={data?.pages} page={data?.page} isAdmin={true}/>
+                </>
             )}
         </>
     )

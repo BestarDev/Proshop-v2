@@ -6,6 +6,7 @@ import { useGetProductsQuery } from '../slices/productsApiSlice'
 import { Link, useParams } from 'react-router-dom'
 import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
+import Meta from '../components/Meta'
 
 const HomeScreen = () => {
   // I think useParams can be used for destructuring in safe way.
@@ -19,6 +20,7 @@ const HomeScreen = () => {
       : error ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>)
       : (
         <>
+          <Meta/>
           <h1>Latest Products</h1>
           <Row>
               {data.products.map((product) => (

@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import { LinkContainer } from 'react-router-bootstrap'
 import { toast } from 'react-toastify'
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice'
+import Message from '../components/Message'
 
 const ProfileScreen = () => {
   const [name, setName] = useState('')

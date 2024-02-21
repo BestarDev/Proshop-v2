@@ -10,7 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:seed": "node backend/seeder.js",
     "data:destroy": "node backend/seeder.js -d",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "preview": "npm install && npm install --prefix frontend && npm run dev"
   },
   "author": "Bestar",
   "license": "MIT",

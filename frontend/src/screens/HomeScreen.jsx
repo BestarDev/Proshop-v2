@@ -5,6 +5,7 @@ import Message from '../components/Message'
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 import { Link, useParams } from 'react-router-dom'
 import Paginate from '../components/Paginate'
+import ProductCarousel from '../components/ProductCarousel'
 
 const HomeScreen = () => {
   // I think useParams can be used for destructuring in safe way.
@@ -13,7 +14,7 @@ const HomeScreen = () => {
 
   return (
     <>
-    {keyword && <Link to='/' className='btn btn-light'>Go Back</Link>}
+    {!keyword ? <ProductCarousel />: <Link to='/' className='btn btn-light'>Go Back</Link>}
       { isLoading ? (<Loader />) 
       : error ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>)
       : (

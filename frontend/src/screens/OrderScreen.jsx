@@ -93,19 +93,19 @@ const OrderScreen = () => {
                         <ListGroup.Item>
                             <h2>Shipping</h2>
                             <p>
-                                <strong>Name: </strong> {order.user.name}
+                                <strong>Name: </strong> {order?.user?.name}
                             </p>
                             <p>
-                                <strong>Email: </strong> {order.user.email}
+                                <strong>Email: </strong> {order?.user?.email}
                             </p>
                             <p>
                                 <strong>Address: </strong>
-                                {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                                {order.shippingAddress.postalCode},{' '} {order.shippingAddress.country}
+                                {order?.shippingAddress?.address}, {order?.shippingAddress?.city}{' '}
+                                {order?.shippingAddress.postalCode},{' '} {order?.shippingAddress?.country}
                             </p>
                             { order.isDelivered ? (
                                 <Message variant='success'>
-                                    Delivered at {order.deliveredAt}
+                                    Delivered at {order?.deliveredAt}
                                 </Message>
                             ) : (
                                 <Message variant='danger'>
@@ -116,11 +116,11 @@ const OrderScreen = () => {
                         <ListGroup.Item>
                             <h1>Payment Method</h1>
                             <p>
-                                <strong>Method: </strong> {order.paymentMethod}
+                                <strong>Method: </strong> {order?.paymentMethod}
                             </p>
-                            {order.isPaid ? (
+                            {order?.isPaid ? (
                                 <Message variant='success'>
-                                    Paid At {order.paidAt}
+                                    Paid At {order?.paidAt}
                                 </Message>
                             ) : (
                                 <Message variant='danger'>

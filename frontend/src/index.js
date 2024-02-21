@@ -29,16 +29,20 @@ import ProductListScreen from './screens/admin/ProductListScreen';
 import ProductEditScreen from './screens/admin/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
+import TestScreen from './screens/TestScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />} >
       <Route path='/' element={<HomeScreen />} />
       <Route path='/page/:pageNumber' element={<HomeScreen />} />
+      <Route path='/search/:keyword' element={<HomeScreen />} />
+      <Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} />
       <Route path='/products/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
+      <Route path='/test' element={<TestScreen /> } />
       
       <Route path='' element={<PrivateRoutes />} >
         <Route path='/shipping' element={<ShippingScreen />} />

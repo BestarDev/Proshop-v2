@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useGetTopProductsQuery } from '../slices/productsApiSlice'
-import Loader from './Loader';
 import Message from './Message';
 import { Carousel, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

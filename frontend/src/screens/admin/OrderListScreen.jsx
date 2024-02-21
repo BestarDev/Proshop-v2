@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice'
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';

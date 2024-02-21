@@ -42,7 +42,7 @@ const UserEditScreen = () => {
                 setIsAdmin(true);
                 return ;
             }
-            const res = await updateUser({userId, userData:{...updatedUser}})
+            await updateUser({userId, userData:{...updatedUser}})
             toast.success('Updated Successfully');
         } catch (error) {
             toast.error(error?.data?.message || error.error);

@@ -54,7 +54,7 @@ const ProductListScreen = () => {
                     </Button>
                 </Col>
             </Row>
-            {loadingDelete || loadingCreate&& <Loader />}
+            {(loadingDelete || loadingCreate) && <Loader />}
             {isLoading ? <Loader /> : 
             error ? <Message variant='danger'>{error?.data?.message || error.error }</Message> : (
                 <>
